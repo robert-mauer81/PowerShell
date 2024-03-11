@@ -1,3 +1,5 @@
+## Used Bing to search a method of creating a GUI with mulpiputle inputs to create a variable value.  Plan to use this in another script
+
 # Load the Windows Forms assembly
 Add-Type -AssemblyName System.Windows.Forms
 
@@ -29,9 +31,9 @@ function Show-InputForm {
 
     # Create an OK button
     $button = New-Object Windows.Forms.Button
+    $button.Location = New-Object Drawing.Point(40, 100)
     $button.Text = "OK"
-    $button.Location = New-Object Drawing.Point(120, 100)
-    $button.Add_Click({
+      $button.Add_Click({
         $result = [PSCustomObject]@{
             Demographics = $textbox1.Text
             OtherStuff = $textbox2.Text
@@ -40,8 +42,15 @@ function Show-InputForm {
         $result
     })
     $form.Controls.Add($button)
-    
+ 
     # Create an Cancel button 
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(150,100)
+    $cancelButton.Size = New-Object System.Drawing.Size(75,23)
+    $cancelButton.Text = 'Cancel'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
 
 
     # Show the form
