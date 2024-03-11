@@ -3,7 +3,7 @@
 ######https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/AD_CREATE_USER.ps1
 ############     staround/ActiveDirectoryCreateUser GitHub Repository       #############
 ############Read Me location:  https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/README.md
-#Goal of this project is to take an original code created by the above author and include utilize it in a lab environment.  In Order to gain experience and skills 
+#Goal of this project is to take an original code created by the above author and utilize it in a lab environment.  In Order to gain experience and skills 
 #utilizing existing PowerShell command scripts in my environment.  I will be using the Go Deploy Lab environment provided during my PAC12 Microsoft Systems &
 #Software Academy Course.  I hope to gain experience and expertise in the implementation PowerShell Script into my environmentent.  I also hope to create a Graphical
 #User Interface that will enable the input of New ADUser account information into the variable that will run the script (this was not includ).
@@ -19,7 +19,7 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     exit;
 }
 
-$localPCNAme = $env:COMPUTERNAME
+$localPCNAme = $env:computername
 
 Write-Output '==========================================================='
 Write-Output "===                AD User Creation Script              ==="
