@@ -11,8 +11,10 @@ function Show-InputForm {
     $form.Height = 300
 
     # Create labels and textboxes
+
+    #Label 1 "First Name" to input the variable for the first name
     $label1 = New-Object Windows.Forms.Label
-    $label1.Text = "Demographics:"
+    $label1.Text = "First Name:"
     $label1.Location = New-Object Drawing.Point(10, 20)
     $form.Controls.Add($label1)
 
@@ -20,8 +22,9 @@ function Show-InputForm {
     $textbox1.Location = New-Object Drawing.Point(120, 20)
     $form.Controls.Add($textbox1)
 
+    #Label 2 "Last Name" to input the variable for the Last name 
     $label2 = New-Object Windows.Forms.Label
-    $label2.Text = "OtherStuff:"
+    $label2.Text = "Last Name:"
     $label2.Location = New-Object Drawing.Point(10, 60)
     $form.Controls.Add($label2)
 
@@ -29,14 +32,25 @@ function Show-InputForm {
     $textbox2.Location = New-Object Drawing.Point(120, 60)
     $form.Controls.Add($textbox2)
 
+    #Label 3 "Email Address" to input the variable for the Last name 
+    $label3 = New-Object Windows.Forms.Label
+    $label3.Text = "Email Address:"
+    $label3.Location = New-Object Drawing.Point(10, 100)
+    $form.Controls.Add($label3)
+    
+    $textbox3 = New-Object Windows.Forms.TextBox
+    $textbox3.Location = New-Object Drawing.Point(120, 100)
+    $form.Controls.Add($textbox3)
+
     # Create an OK button
     $button = New-Object Windows.Forms.Button
-    $button.Location = New-Object Drawing.Point(40, 100)
+    $button.Location = New-Object Drawing.Point(40, 200)
     $button.Text = "OK"
       $button.Add_Click({
         $result = [PSCustomObject]@{
-            Demographics = $textbox1.Text
-            OtherStuff = $textbox2.Text
+            FirstName = $textbox1.Text
+            LastName = $textbox2.Text
+            Email = $textbox3.Text
         }
         $form.Close()
         $result
@@ -45,7 +59,7 @@ function Show-InputForm {
  
     # Create an Cancel button 
     $cancelButton = New-Object System.Windows.Forms.Button
-    $cancelButton.Location = New-Object System.Drawing.Point(150,100)
+    $cancelButton.Location = New-Object System.Drawing.Point(150,200)
     $cancelButton.Size = New-Object System.Drawing.Size(75,23)
     $cancelButton.Text = 'Cancel'
     $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
@@ -61,9 +75,11 @@ function Show-InputForm {
 $result = Show-InputForm
 
 # Access the input values
-$demographics = $result.Demographics
-$otherStuff = $result.OtherStuff
+$FirstName = $result.FirstName
+$LastName = $result.LastName
+$Email = $result.Email
 
 # Now you can use these variables in your script
-Write-Host "Demographics: $demographics"
-Write-Host "OtherStuff: $otherStuff"
+Write-Host "Fiirst Name: $FirstName"
+Write-Host "Last Name: $LastName"
+Write-Host "Email Address: $Email"
