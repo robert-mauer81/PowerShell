@@ -6,7 +6,7 @@ Add-Type -AssemblyName System.Windows.Forms
 # Create a function to display the input form
 function Show-InputForm {
     $form = New-Object Windows.Forms.Form
-    $form.Text = "Input Form"
+    $form.Text = "New ADUser Form"
     $form.Width = 300
     $form.Height = 300
 
