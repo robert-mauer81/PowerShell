@@ -8,7 +8,7 @@ function Show-InputForm {
     $form = New-Object Windows.Forms.Form
     $form.Text = "Input Form"
     $form.Width = 300
-    $form.Height = 200
+    $form.Height = 300
 
     # Create labels and textboxes
     $label1 = New-Object Windows.Forms.Label
