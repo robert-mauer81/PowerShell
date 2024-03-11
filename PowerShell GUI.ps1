@@ -47,13 +47,13 @@ function Show-InputForm {
     $button.Location = New-Object Drawing.Point(40, 200)
     $button.Text = "OK"
       $button.Add_Click({
-        $result = [PSCustomObject]@{
+        $global:result = [PSCustomObject]@{
             FirstName = $textbox1.Text
             LastName = $textbox2.Text
             Email = $textbox3.Text
         }
         $form.Close()
-        $result
+        
     })
     $form.Controls.Add($button)
  
@@ -66,20 +66,24 @@ function Show-InputForm {
     $form.CancelButton = $cancelButton
     $form.Controls.Add($cancelButton)
 
-
     # Show the form
     $form.ShowDialog()
+
+    # return the result
+    $result
 }
 
 # Call the function and store the result
 $result = Show-InputForm
 
 # Access the input values
-$FirstName = $result.FirstName
-$LastName = $result.LastName
-$Email = $result.Email
+$FirstName = $global:result.FirstName
+$LastName = $global:result.LastName
+$Email = $global:result.Email
 
 # Now you can use these variables in your script
-Write-Host "Fiirst Name: $FirstName"
+Write-Host "First Name: $FirstName"
 Write-Host "Last Name: $LastName"
 Write-Host "Email Address: $Email"
+
+#now I'm going to try and combine this with the Create ADUser Repository 
