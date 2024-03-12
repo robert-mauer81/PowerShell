@@ -101,14 +101,14 @@ $Body += "`tWindows Logon    : " + $DisplayName + "`n"
 $Body += "`tWindows Password : " + $Password + "`n"
 
 #this will send the eamil to the location you would like it "IT@YOUR_DOMAIN.com"  Must be updtated 
-$IT = "it@YOUR_DOMAIN.com"
+$IT = "it@adatum.com"
 
 #TODO - File creation for SMTP credit storage + domain controller connection pwd
 #SMTP Credits
 $EMAIL_ACCOUNT = Read-Host -Prompt "Please enter your SMTP Account"
 $EMAIL_PWD = Read-Host -Prompt "Please enter your SMTP Account Password"
-$MAIL_SERVER = 'mail.YOUR_DOMAIN.com'
-$MAIL_PORT = 587
+$MAIL_SERVER = 'LON-SVR1.adatum.com'
+$MAIL_PORT = 25
 
 function Send-ToEmail([string]$emailUser) {
     $message = new-object Net.Mail.MailMessage;
