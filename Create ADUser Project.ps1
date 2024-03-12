@@ -58,10 +58,11 @@ Enter-PSSession -ComputerName LON-DC1 -Credential $AdminUser
 Write-Output "Connection to Domain Controller established"
 Write-Output "`n"
 
-#Gather input about new user object
+#Gather input about new user object  ***This is where the GUI will come in once I get this code working in my enviroment***
 $FirstName = Read-Host -Prompt 'Input new user first name'
 $LastName = Read-Host -Prompt 'Input new user last name'
 $Email = Read-Host -Prompt 'Input new user email'
+$Path = Read-Host -Prompt 'Input New user path (E.g. OU=IT,DC=Adatum,DC=com)'
 
 #Formulate display name from first/last names
 $DisplayName = $FirstName + '.' + $LastName 
@@ -78,7 +79,7 @@ $SecurePassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
 Write-Output "`n"
 Write-Output "User Password is: " $Password
 
-New-ADUser -UserPrincipalName $DisplayName -Name $DisplayName -AccountPassword $SecurePassword -ChangePasswordAtLogon 1 -DisplayName $DisplayName -EmailAddress $Email -Enabled 1 -GivenName $FirstName -Surname $LastName -Path "YOUR_PATH"
+New-ADUser -UserPrincipalName $DisplayName -Name $DisplayName -AccountPassword $SecurePassword -ChangePasswordAtLogon 1 -DisplayName $DisplayName -EmailAddress $Email -Enabled 1 -GivenName $FirstName -Surname $LastName -Path $Path
 
 Write-Output "`n"
 Write-Output "Created user."
