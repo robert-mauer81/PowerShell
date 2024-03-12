@@ -8,8 +8,6 @@
 #Software Academy Course.  I hope to gain experience and expertise in the implementation PowerShell Script into my environmentent.  I also hope to create a Graphical
 #User Interface that will enable the input of New ADUser account information into the variable that will run the script (this was not includ).
  
-
-
 #Just in case the AD DS Module is not already loaded 
 Import-Module activedirectory
 
