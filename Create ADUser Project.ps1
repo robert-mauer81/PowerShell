@@ -11,6 +11,9 @@
 #Just in case the AD DS Module is not already loaded 
 Import-Module activedirectory
 
+#Load the System.Web assembly 
+Add-Type -AssemblyName System.Web
+
 #Elevate to Admin
 if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Start-Process PowerShell -Verb RunAs "-NoProfile -ExecutionPolicy Bypass -Command `"cd '$pwd'; & '$PSCommandPath';`"";
@@ -76,6 +79,7 @@ $Password = [System.Web.Security.Membership]::GeneratePassword(8,0)
 #Covnert to SecureString for New-ADUser call
 $SecurePassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
 
+#Shows Administrator default password.  **Security concerns if account isn't imediately log in and password changed
 Write-Output "`n"
 Write-Output "User Password is: " $Password
 
@@ -96,6 +100,7 @@ $Body += "`tUser Email       : " + $Email + "`n"
 $Body += "`tWindows Logon    : " + $DisplayName + "`n"
 $Body += "`tWindows Password : " + $Password + "`n"
 
+#this will send the eamil to the location you would like it "IT@YOUR_DOMAIN.com"  Must be updtated 
 $IT = "it@YOUR_DOMAIN.com"
 
 #TODO - File creation for SMTP credit storage + domain controller connection pwd
