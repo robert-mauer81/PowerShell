@@ -5,7 +5,9 @@
 #utilizing existing PowerShell command scripts in my environment.  I will be using the Go Deploy Lab environment provided during my PAC12 Microsoft Systems &
 #Software Academy Course.  I hope to gain experience and expertise in the implementation PowerShell Script into my environmentent.  I also hope to create a Graphical
 #User Interface that will enable the input of New ADUser account information into the variable that will run the script (this was not includ).
- 
+
+NOTE: This all looks good but your Send-Mail function really should be a standalone tool int it's own module or script.
+
 #Just in case the AD DS Module is not already loaded 
 Import-Module activedirectory
 
