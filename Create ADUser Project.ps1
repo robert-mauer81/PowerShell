@@ -1,5 +1,3 @@
-############              MSSA Project Create ADUser with GUI              ############
-
 ######https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/AD_CREATE_USER.ps1
 ############     staround/ActiveDirectoryCreateUser GitHub Repository       #############
 ############Read Me location:  https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/README.md
@@ -127,3 +125,4 @@ function Send-ToEmail([string]$emailUser) {
 Send-ToEmail($Email)
 
 Read-Host -Prompt "Press Enter to exit."
+#This worked to create New ADUsers with input information.  Now I will move on to combine my GUI project inot this. 
