@@ -1,0 +1,197 @@
+############              MSSA Project Create ADUser with GUI              ############
+
+######https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/AD_CREATE_USER.ps1
+############     staround/ActiveDirectoryCreateUser GitHub Repository       #############
+############Read Me location:  https://github.com/starhound/ActiveDirectoryCreateUser/blob/main/README.md
+#Goal of this project is to take an original code created by the above author and utilize it in a lab environment.  In Order to gain experience and skills 
+#utilizing existing PowerShell command scripts in my environment.  I will be using the Go Deploy Lab environment provided during my PAC12 Microsoft Systems &
+#Software Academy Course.  I hope to gain experience and expertise in the implementation PowerShell Script into my environmentent.  I also hope to create a Graphical
+#User Interface that will enable the input of New ADUser account information into the variable that will run the script (this was not includ).
+ 
+#Just in case the AD DS Module is not already loaded 
+Import-Module activedirectory
+
+#Load the System.Web assembly
+Add-Type -AssemblyName System.Web
+
+# Load the Windows Forms assembly for GUI
+Add-Type -AssemblyName System.Windows.Forms
+
+#Elevate to Admin
+if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Start-Process PowerShell -Verb RunAs "-NoProfile -ExecutionPolicy Bypass -Command `"cd '$pwd'; & '$PSCommandPath';`"";
+    exit;
+}
+# Comment=2
+$localPCNAme = $env:computername
+
+Write-Output '==========================================================='
+Write-Output "===                AD User Creation Script              ==="
+Write-Output '==========================================================='
+
+Write-Output ''
+
+Write-Output "***********************************************************"
+Write-Output "***     Please ensure you've created the user email     ***"
+Write-Output "***     in cPanel before using this PowerShell script   ***"
+Write-Output '***********************************************************'
+
+#Grab user name
+$AdminUser = $env:UserName
+
+## Start of code for GUI
+
+# Create a function to display the input form
+function Show-InputForm {
+    $form = New-Object Windows.Forms.Form
+    $form.Text = "New ADUser Form"
+    $form.Width = 300
+    $form.Height = 300
+
+    # Create labels and textboxes
+
+    #Label 1 "First Name" to input the variable for the first name
+    $label1 = New-Object Windows.Forms.Label
+    $label1.Text = "First Name:"
+    $label1.Location = New-Object Drawing.Point(10, 20)
+    $form.Controls.Add($label1)
+
+    $textbox1 = New-Object Windows.Forms.TextBox
+    $textbox1.Location = New-Object Drawing.Point(120, 20)
+    $form.Controls.Add($textbox1)
+
+    #Label 2 "Last Name" to input the variable for the Last name 
+    $label2 = New-Object Windows.Forms.Label
+    $label2.Text = "Last Name:"
+    $label2.Location = New-Object Drawing.Point(10, 60)
+    $form.Controls.Add($label2)
+
+    $textbox2 = New-Object Windows.Forms.TextBox
+    $textbox2.Location = New-Object Drawing.Point(120, 60)
+    $form.Controls.Add($textbox2)
+
+    #Label 3 "Email Address" to input the variable for the Last name 
+    $label3 = New-Object Windows.Forms.Label
+    $label3.Text = "Email Address:"
+    $label3.Location = New-Object Drawing.Point(10, 100)
+    $form.Controls.Add($label3)
+    
+    $textbox3 = New-Object Windows.Forms.TextBox
+    $textbox3.Location = New-Object Drawing.Point(120, 100)
+    $form.Controls.Add($textbox3)
+
+    # Create an OK button
+    $button = New-Object Windows.Forms.Button
+    $button.Location = New-Object Drawing.Point(40, 200)
+    $button.Text = "OK"
+      $button.Add_Click({
+        $global:result = [PSCustomObject]@{
+            FirstName = $textbox1.Text
+            LastName = $textbox2.Text
+            Email = $textbox3.Text
+        }
+        $form.Close()
+        
+    })
+    $form.Controls.Add($button)
+ 
+    # Create an Cancel button 
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(150,200)
+    $cancelButton.Size = New-Object System.Drawing.Size(75,23)
+    $cancelButton.Text = 'Cancel'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
+
+    # Show the form
+    $form.ShowDialog()
+
+    # return the result
+    $result
+}
+
+# Call the function and store the result
+$result = Show-InputForm
+
+# Access the input values
+$FirstName = $global:result.FirstName
+$LastName = $global:result.LastName
+$Email = $global:result.Email
+
+# Now you can use these variables in your script
+Write-Host "First Name: $FirstName"
+Write-Host "Last Name: $LastName"
+Write-Host "Email Address: $Email"
+
+#now I'm going to try and combine this with the Create ADUser Repository 
+
+#Gather input about new user object  *****Original New-ADUser Variables 
+#$FirstName = Read-Host -Prompt 'Input new user first name'
+#$LastName = Read-Host -Prompt 'Input new user last name'
+#$Email = Read-Host -Prompt 'Input new user email'
+#$Path = Read-Host -Prompt 'Input New user path (E.g. OU=IT,DC=Adatum,DC=com)'
+
+#Formulate display name from first/last names
+$DisplayName = $FirstName + '.' + $LastName 
+
+Write-Output "`n"
+Write-Output 'User Display Name will be: ' $DisplayName
+
+#Generate Random Pwd
+$Password = [System.Web.Security.Membership]::GeneratePassword(12,3)
+
+#Covnert to SecureString for New-ADUser call
+$SecurePassword = ConvertTo-SecureString -String $Password -AsPlainText -Force
+
+#Shows Administrator default password.  **Security concerns if account isn't imediately log in and password changed 
+Write-Output "`n"
+Write-Output "User Password is: " $Password
+
+New-ADUser -UserPrincipalName $DisplayName -Name $DisplayName -AccountPassword $SecurePassword -ChangePasswordAtLogon 1 -DisplayName $DisplayName -EmailAddress $Email -Enabled 1 -GivenName $FirstName -Surname $LastName -Path $Path
+
+Write-Output "`n"
+Write-Output "Created user."
+
+#End DC01 Session
+Exit-PSSession
+
+#Notify employees
+Write-Output "Starting Email Notification`n"
+
+$Subject = "User Windows Logon Information"
+$Body = "The following login information has been created for " + $FirstName + " " + $LastName + "`n"
+$Body += "`tUser Email       : " + $Email + "`n"
+$Body += "`tWindows Logon    : " + $DisplayName + "`n"
+$Body += "`tWindows Password : " + $Password + "`n"
+
+#this will need to be edited to have the address you want the email sent to 
+$IT = "it@adatum.com"
+
+#TODO - File creation for SMTP credit storage + domain controller connection pwd
+#SMTP Credits
+$EMAIL_ACCOUNT = Read-Host -Prompt "Please enter your SMTP Account"
+$EMAIL_PWD = Read-Host -Prompt "Please enter your SMTP Account Password"
+$MAIL_SERVER = 'LON-SVR1.adatum.com'
+$MAIL_PORT = 25
+
+function Send-ToEmail([string]$emailUser) {
+    $message = new-object Net.Mail.MailMessage
+    $message.From = $IT;
+    $message.CC.Add($IT);
+    $message.To.Add($email);
+    $message.Subject = $Subject;
+    $message.Body = $Body;
+    $smtp = new-object Net.Mail.SmtpClient($MAIL_SERVER, $MAIL_PORT);
+    $smtp.EnableSSL = $false;
+    $smtp.Credentials = New-Object System.Net.NetworkCredential($EMAIL_ACCOUNT, $EMAIL_PWD);
+    $smtp.send($message);
+     write-host "E-Mail notification Sent" ; 
+}
+
+Send-ToEmail($Email)
+
+Read-Host -Prompt "Press Enter to exit."
+
+
+
