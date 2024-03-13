@@ -151,14 +151,6 @@ Write-Host "Email Address: $Email"
 Write-Host "Path: $Path"
 Write-Host "Default Password: $Password"
 
-#now I'm going to try and combine this with the Create ADUser Repository 
-
-#Gather input about new user object  *****Original New-ADUser Variables 
-#$FirstName = Read-Host -Prompt 'Input new user first name'
-#$LastName = Read-Host -Prompt 'Input new user last name'
-#$Email = Read-Host -Prompt 'Input new user email'
-#$Path = Read-Host -Prompt 'Input New user path (E.g. OU=IT,DC=Adatum,DC=com)'
-
 #Formulate display name from first/last names
 $DisplayName = $FirstName + '.' + $LastName 
 
