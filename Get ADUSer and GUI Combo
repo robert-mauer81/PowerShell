@@ -39,7 +39,7 @@ Write-Output '***********************************************************'
 #Grab user name
 $AdminUser = $env:UserName
 
-## Start of code for GUI
+## Start of script for GUI
 
 # Create a function to display the input form
 function Show-InputForm {
@@ -57,7 +57,7 @@ function Show-InputForm {
     $form.Controls.Add($label1)
 
     $textbox1 = New-Object Windows.Forms.TextBox
-    $textbox1.Location = New-Object Drawing.Point(120, 20)
+    $textbox1.Location = New-Object Drawing.Point(170, 20)
     $form.Controls.Add($textbox1)
 
     #Label 2 "Last Name" to input the variable for the Last name 
@@ -67,7 +67,7 @@ function Show-InputForm {
     $form.Controls.Add($label2)
 
     $textbox2 = New-Object Windows.Forms.TextBox
-    $textbox2.Location = New-Object Drawing.Point(120, 60)
+    $textbox2.Location = New-Object Drawing.Point(170, 60)
     $form.Controls.Add($textbox2)
 
     #Label 3 "Email Address" to input the variable for the Last name 
@@ -77,18 +77,41 @@ function Show-InputForm {
     $form.Controls.Add($label3)
     
     $textbox3 = New-Object Windows.Forms.TextBox
-    $textbox3.Location = New-Object Drawing.Point(120, 100)
+    $textbox3.Location = New-Object Drawing.Point(170, 100)
     $form.Controls.Add($textbox3)
+
+    #Label 4 "Path" to input the variable for the Last name 
+    $label4 = New-Object Windows.Forms.Label
+    $label4.Text = "Path (example OU=IT,DC=Adatum,DC=com):"
+    $label4.Location = New-Object Drawing.Point(10, 140)
+    $form.Controls.Add($label4)
+    
+    $textbox4 = New-Object Windows.Forms.TextBox
+    $textbox4.Location = New-Object Drawing.Point(170, 140)
+    $form.Controls.Add($textbox4)
+
+    #Label 5 "Password" to input the variable value for the users intial logon password 
+    $label5 = New-Object Windows.Forms.Label
+    $label5.Text = "Default Password:"
+    $label5.Location = New-Object Drawing.Point(10, 180)
+    $form.Controls.Add($label5)
+    
+    $textbox5 = New-Object Windows.Forms.TextBox
+    $textbox5.Location = New-Object Drawing.Point(170, 180)
+    $form.Controls.Add($textbox5)
 
     # Create an OK button
     $button = New-Object Windows.Forms.Button
-    $button.Location = New-Object Drawing.Point(40, 200)
+    $button.Location = New-Object Drawing.Point(40, 225)
     $button.Text = "OK"
       $button.Add_Click({
         $global:result = [PSCustomObject]@{
             FirstName = $textbox1.Text
             LastName = $textbox2.Text
             Email = $textbox3.Text
+            Path = $textbox4.Text
+            Password = $textbox5.Text
+           
         }
         $form.Close()
         
@@ -97,7 +120,7 @@ function Show-InputForm {
  
     # Create an Cancel button 
     $cancelButton = New-Object System.Windows.Forms.Button
-    $cancelButton.Location = New-Object System.Drawing.Point(150,200)
+    $cancelButton.Location = New-Object System.Drawing.Point(150,225)
     $cancelButton.Size = New-Object System.Drawing.Size(75,23)
     $cancelButton.Text = 'Cancel'
     $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
@@ -118,11 +141,15 @@ $result = Show-InputForm
 $FirstName = $global:result.FirstName
 $LastName = $global:result.LastName
 $Email = $global:result.Email
+$Path = $global:result.Path
+$Password = $global:result.Password
 
 # Now you can use these variables in your script
 Write-Host "First Name: $FirstName"
 Write-Host "Last Name: $LastName"
 Write-Host "Email Address: $Email"
+Write-Host "Path: $Path"
+Write-Host "Default Password: $Password"
 
 #now I'm going to try and combine this with the Create ADUser Repository 
 
