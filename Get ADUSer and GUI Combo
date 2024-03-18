@@ -47,6 +47,8 @@ function Show-InputForm {
     $form.Text = "New ADUser Form"
     $form.Width = 300
     $form.Height = 300
+    #Powershell Icon in title bar
+    $Form.Icon = [Drawing.Icon]::ExtractAssociatedIcon((Get-Command powershell).Path)
 
     # Create labels and textboxes
 
