@@ -1,4 +1,4 @@
-#Use PowerShell to List All AD User Attributes
+#Use PowerShell to List All AD User Attributes and Proporties 
 
 Import-Module ActiveDirectory
 $Loop = $True
