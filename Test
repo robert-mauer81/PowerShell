@@ -1,3 +1,8 @@
-Test
+#Test
 
-This is a test to understand how the website works by trail
+#This post started as a test to understand how the website works.  I figured while I'm in here I will will include a script that will also test the connection to all the Computer objects in your AD DS Enviroment. 
+
+Get-ADComputer -Filter * | ForEach-Object {
+    $computerName = $_.Name
+    Test-Connection -ComputerName $computerName -Count 1
+}
